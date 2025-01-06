@@ -10,7 +10,7 @@
 # `Flask` from `flask`
 # `Migrate` from `flask_migrate`
 # db and `Production` from `models`
-from flask import Flask
+from flask import Flask, g, jsonify, make_response, request
 from flask_migrate import Migrate
 from models import Production, db
 
@@ -49,16 +49,25 @@ db.init_app(app)
 # 12. ✅ Routes
 # Create your route
 
+
 # `@app.route('/')
 #  def index():
 #    return '<h1>Hello World!</h1>'`
+@app.route("/")
+def index():
+    return f'<h1>Hello {g.current_user["username"]}!</h1>'
 
-# 13. ✅ Run the server with `flask run` and verify your route in the browser at `http://localhost:5000/`
+
+# 13. ✅ Run the server with `flask run` and verify your route in the browser at `http://localhost:5555/`
+
 
 # 14. ✅ Create a dynamic route
 # `@app.route('/productions/<string:title>')
 #  def production(title):
 #     return f'<h1>{title}</h1>'`
+# @app.route("/productions/<string:title>")
+# def production(title):
+#     return f"<h2>{title}</h2>"
 
 
 # 15.✅ Update the route to find a `production` by its `title` and send it to our browser
@@ -68,6 +77,7 @@ db.init_app(app)
 # 📚 Review With Students: status codes
 # `make_response` will allow us to make a response object with the response body and status code
 # `jsonify` will convert our query into JSON
+
 
 # `@app.route('/productions/<string:title>')
 # def production(title):
@@ -81,13 +91,35 @@ db.init_app(app)
 #         jsonify(production_response),
 #         200
 #     )`
+@app.route("/productions/<string:title>")
+def production(title):
+    production = Production.query.filter(Production.title == title).first()
+    if not production:
+        return make_response("Production not found", 404)
+    prod_dict = {
+        "title": production.title,
+        "genre": production.genre,
+        "director": production.director,
+    }
+    response = make_response(jsonify(prod_dict), 200)
+    return response
+
 
 # 16.✅ View the path and host with request context
+@app.route("/context")
+def context():
+    return f"<h1>Path: {request.path} Host: {request.host} </h1>"
+
 
 # 17.✅ Use the before_request request hook, what this hook does is up to you. You could hit a breakpoint, print something to server console or anything else you can think of.
+@app.before_request
+def runs_before():
+    g.current_user = {"user_id": 1, "username": "Miyuki"}
+    print(g.current_user)
+
 
 # Note: If you'd like to run the application as a script instead of using `flask run`, uncomment the line below
 # and run `python app.py`
 
-# if __name__ == '__main__':
-#     app.run(port=5000, debug=True)
+if __name__ == "__main__":
+    app.run(port=5555, debug=True)
