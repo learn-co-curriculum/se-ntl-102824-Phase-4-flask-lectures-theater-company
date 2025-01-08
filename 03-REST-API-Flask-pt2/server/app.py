@@ -121,6 +121,67 @@ class ProductionByID(Resource):
 api.add_resource(ProductionByID, "/productions/<int:id>")
 
 
+@app.route("/cast_members", methods=["GET", "POST"])  # defaults to GET only
+def index():
+    if request.method == "GET":
+        members = [
+            member.to_dict(
+                rules=(
+                    "-production.budget",
+                    "-production.ongoing",
+                    "-production.updated_at",
+                    "-production.image",
+                    "-production.description",
+                )
+            )
+            for member in db.session.query(CastMember).all()
+        ]
+        # import ipdb
+
+        # ipdb.set_trace()
+        return make_response(members, 200)
+    elif request.method == "POST":
+        req_JSON = request.get_json()
+        # new_member = CastMember()
+        # for attr, value in req_JSON.items():
+        #     setattr(new_member, attr, value)
+        new_member = CastMember(**req_JSON)
+        db.session.add(new_member)
+        db.session.commit()
+        return make_response(new_member.to_dict(), 201)
+
+
+class CastMemberById(Resource):
+
+    @classmethod
+    def find_member_by_id(cls, id):
+        member = CastMember.query.filter_by(id=id).first()
+        if not member:
+            raise NotFound
+        return member
+
+    def get(self, id):
+        return make_response(self.__class__.find_member_by_id(id).to_dict(), 200)
+
+    def patch(self, id):
+        member = self.__class__.find_member_by_id(id)
+        req_JSON = request.get_json()
+        for attr, value in req_JSON.items():
+            setattr(member, attr, value)
+        db.session.add(member)
+        db.session.commit()
+        return make_response(member.to_dict(), 202)
+
+    def delete(self, id):
+        member = self.__class__.find_member_by_id(id)
+        db.session.delete(member)
+        db.session.commit()
+        return make_response("", 204)
+
+
+api.add_resource(CastMemberById, "/cast_members/<int:id>")
+
+
 # 2.✅ use the @app.errorhandler() decorator to handle Not Found
 # 2.1 Create the decorator and pass it NotFound
 # 2.2 Use make_response to create a response with a message and the status 404
