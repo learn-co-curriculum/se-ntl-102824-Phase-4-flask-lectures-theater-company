@@ -1,13 +1,13 @@
-import  {useParams, useHistory } from 'react-router-dom'
+import  {useParams, useNavigate } from 'react-router-dom'
 import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 function ProductionDetail() {
-  const [production, setProduction] = useState({crew_members:[], performers_and_roles:[]})
+  const [production, setProduction] = useState({})
   const [error, setError] = useState(null)
   
   const params = useParams()
-  const history = useHistory()
+  const history = useNavigate()
   useEffect(()=>{
     fetch(`/productions/${params.id}`)
     .then(res => { 
@@ -22,7 +22,7 @@ function ProductionDetail() {
   //12.✅ Create a Delete Button and add a fetch request that will delete a production 
 
   
-  const {id, title, genre, image,description, crew_members} = production 
+  const {id, title, genre, image,description, cast_members} = production 
   if(error) return <h2>{error}</h2>
   return (
       <CardDetail id={id}>
@@ -35,7 +35,7 @@ function ProductionDetail() {
               <p>{description}</p>
               <h2>Cast Members</h2>
               <ul>
-                {crew_members.map(crew => <li>{`${crew.role} : ${crew.name}`}</li>)}
+                {cast_members.map(cast => <li>{`${cast.role} : ${cast.name}`}</li>)}
               </ul>
             </div>
             <img src={image}/>

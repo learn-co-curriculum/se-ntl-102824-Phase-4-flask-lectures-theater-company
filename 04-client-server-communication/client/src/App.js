@@ -1,7 +1,7 @@
 // 📚 Review With Students:
     // Request response cycle
     //Note: This was build using v5 of react-router-dom
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import {createGlobalStyle} from 'styled-components'
 import {useEffect, useState} from 'react'
 import Home from './components/Home'
@@ -14,7 +14,7 @@ function App() {
   //Note: This may be a good opportunity to refactor with context
   const [productions, setProductions] = useState([])
   const [production_edit, setProductionEdit] = useState(false)
-  const history = useHistory()
+  const navigate = useNavigate()
   //5.✅ GET Productions
   // 5.1 Invoke the useEffect() hook
   // 5.2 Build a fetch request to '/productions'
@@ -35,14 +35,14 @@ function App() {
   const deleteProduction = (deleted_production) => setProductions(productions => productions.filter((production) => production.id !== deleted_production.id) )
   const handleEdit = (production) => {
     setProductionEdit(production)
-    history.push(`/productions/edit/${production.id}`)
+    navigate.push(`/productions/edit/${production.id}`)
   }
 
   return (
     <>
     <GlobalStyle />
     <Navigation handleEdit={handleEdit}/>
-      <Switch>
+      <Routes>
         <Route  path='/productions/new'>
           <ProductionForm addProduction={addProduction}/>
         </Route>
@@ -58,7 +58,7 @@ function App() {
         <Route>
           <NotFound />
         </Route>
-      </Switch>
+      </Routes>
     </>
   )
 }

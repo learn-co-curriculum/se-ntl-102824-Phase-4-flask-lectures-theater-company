@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useFormik } from "formik"
 import * as yup from "yup"
 
@@ -8,7 +8,7 @@ import * as yup from "yup"
 
 function ProductionFormEdit({updateProduction, production_edit}) {
   const [errors, setError] = useState(false)
-  const history = useHistory()
+  const navigate = useNavigate()
   const formSchema = yup.object().shape({
     title: yup.string().required("Must enter a title"),
     budget: yup.number().positive()

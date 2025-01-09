@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // 6.✅ Verify formik and yet have been added to our package.json dependencies 
   // import the useFormik hook from formik
   // import * as yup for yup
 
 
 function ProductionForm({addProduction}) {
-  const history = useHistory()
+  const navigate = useNavigate()
   // 7.✅ Use yup to create client side validations
     // 7.1 validations
     // Every form field is required 
