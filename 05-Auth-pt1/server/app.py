@@ -42,7 +42,7 @@ app.secret_key = 'Secret Key Here!'
 migrate = Migrate(app, db)
 db.init_app(app)
 
-Api.error_router = lambda: self, handler, e: handler(e)
+Api.error_router = lambda self, handler, e: handler(e)
 api = Api(app)
 
 class Productions(Resource):
