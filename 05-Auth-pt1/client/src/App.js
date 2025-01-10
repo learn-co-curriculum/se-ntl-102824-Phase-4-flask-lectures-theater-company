@@ -1,6 +1,7 @@
 // 📚 Review With Students:
     // Request response cycle
     //Note: This was build using v5 of react-router-dom
+    // TODO: update react-router to v6
 import { Route, Switch, useHistory } from 'react-router-dom'
 import {createGlobalStyle} from 'styled-components'
 import {useEffect, useState} from 'react'
