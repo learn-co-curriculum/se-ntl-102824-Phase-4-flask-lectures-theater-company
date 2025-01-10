@@ -18,7 +18,7 @@
      # In Terminal cd into the root directory, run:
         # `honcho start -f Procfile.dev`
 
-from flask import Flask, request, make_response, abort, session, jsonify
+from flask import Flask, request, make_response, abort, session
 from flask_migrate import Migrate
 
 from flask_restful import Api, Resource
@@ -42,6 +42,7 @@ app.secret_key = 'Secret Key Here!'
 migrate = Migrate(app, db)
 db.init_app(app)
 
+Api.error_router = lambda: self, handler, e: handler(e)
 api = Api(app)
 
 class Productions(Resource):
@@ -97,13 +98,13 @@ class ProductionByID(Resource):
     def patch(self, id):
         production = Production.query.filter_by(id=id).first()
         if not production:
-            abort(404, 'The Production you were trying to update for was not found')
+            # abort(404, 'The Production you were trying to update for was not found')
+            raise NotFound
 
-        for attr in request.form:
-            setattr(production, attr, request.form[attr])
+        for attr in request.get_json():
+            setattr(production, attr, request.get_json()[attr])
 
-        production.ongoing = bool(request.form['ongoing'])
-        production.budget = int(request.form['budget'])
+        production.budget = int(request.get_json()['budget'])
 
         db.session.add(production)
         db.session.commit()
@@ -190,4 +191,4 @@ def handle_not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5555, debug=True)
