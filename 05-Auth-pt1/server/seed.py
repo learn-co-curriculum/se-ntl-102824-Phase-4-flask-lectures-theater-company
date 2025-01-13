@@ -109,6 +109,6 @@ with app.app_context():
     db.session.add_all(hamilton_cast_members)
     db.session.commit()
 
-    # user = User(name='Rose Thecat', email='rose_is_cute@gmail.com')
-    # db.session.add(user)
-    # db.session.commit()
+    user = User(name="Rose Thecat", email="rose_is_cute@gmail.com")
+    db.session.add(user)
+    db.session.commit()
