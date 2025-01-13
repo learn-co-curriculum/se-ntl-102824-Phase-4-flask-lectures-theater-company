@@ -6,16 +6,14 @@
    # Salting 
      #Rainbow Tables
    # Bcrypt
-
-from flask_sqlalchemy import SQLAlchemy
+from config import bcrypt, db
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
 
-# 3.✅ Import bcyrpt from app
+# 3.✅ Import bcyrpt from config
 
 
-db = SQLAlchemy()
 class Production(db.Model, SerializerMixin):
     __tablename__ = 'productions'
     
@@ -73,18 +71,29 @@ class User(db.Model, SerializerMixin):
 
     # 4.✅ Add a column _password_hash
         # Note: When an underscore is used, it's a sign that the variable or method is for internal use.
+    _password_hash = db.Column(db.String)
    
     # 5.✅ Create a hybrid_property that will protect the hash from being viewed
-    
-    # 6.✅ Navigate to app
-  
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+
     # 7.✅ Create a setter method called password_hash that takes self and a password.
         #7.1 Use bcyrpt to generate the password hash with bcrypt.generate_password_hash
         #7.2 Set the _password_hash to the hashed password
-
-
-
+    @password_hash.setter
+    def password_hash(self, password):
+        password_hash = bcrypt.generate_password_hash(password.encode("utf8"))
+        self._password_hash = password_hash.decode("utf8")
+    
+        
+    # 6.✅ Navigate to app
+  
      # 8.✅ Create an authenticate method that uses bcyrpt to verify the password against the hash in the DB with bcrypt.check_password_hash 
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(self._password_hash, password.encode("utf8"))
+
+
 
      # 9.✅ Navigate to app
     def __repr__(self):

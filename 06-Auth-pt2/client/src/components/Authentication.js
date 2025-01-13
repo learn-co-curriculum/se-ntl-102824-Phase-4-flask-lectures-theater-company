@@ -7,6 +7,7 @@ import * as yup from "yup"
 
 function Authentication({updateUser}) {
   const [signUp, setSignUp] = useState(false)
+  const [error, setError] = useState(null)
   
   const history = useHistory()
 
@@ -32,6 +33,7 @@ function Authentication({updateUser}) {
           body: JSON.stringify(values),
         })
         .then(res => {
+          console.log(res.ok, res.status)
           if(res.ok){
             res.json().then(user => {
               console.log(user)
@@ -42,7 +44,7 @@ function Authentication({updateUser}) {
             //12✅ Handle user errors if Auth fails
               //12.1 add errors to state
               //12.2 conditionally render the errors in jsx
-            res.json().then(console.log)
+            res.json().then(error => setError(error))
           }
         })
        
@@ -51,7 +53,7 @@ function Authentication({updateUser}) {
 
     return (
         <> 
-        {"Render Errors Here"}
+        {error && <h2 style={{ color: 'red '}}>{error.error}</h2>}
         <h2>Please Log in or Sign up!</h2>
         <h2>{signUp?'Already a member?':'Not a member?'}</h2>
         <button onClick={handleClick}>{signUp?'Log In!':'Register now!'}</button>

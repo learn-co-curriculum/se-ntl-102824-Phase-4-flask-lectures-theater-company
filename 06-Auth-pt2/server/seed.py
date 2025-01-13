@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 from faker import Faker
 
-from app import app
-from models import db, Production, CastMember, User
+from app import app, db
+from models import Production, CastMember, User
 
-db.init_app(app)
 fake = Faker()
 
 with app.app_context():   
