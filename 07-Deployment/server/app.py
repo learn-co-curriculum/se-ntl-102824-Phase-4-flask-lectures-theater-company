@@ -225,6 +225,4 @@ def handle_unauthorized(e):
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
-    import ipdb
-
-    ipdb.set_trace()
+    
