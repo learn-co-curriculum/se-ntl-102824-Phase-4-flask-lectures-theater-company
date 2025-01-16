@@ -13,7 +13,7 @@
 # `honcho start -f Procfile.dev`
 
 from config import api, app
-from flask import Flask, abort, jsonify, make_response, request, session
+from flask import Flask, abort, render_template, make_response, request, session
 
 # from flask_cors import CORS
 from flask_restful import Resource
