@@ -19,13 +19,13 @@ function App() {
   },[])
 
   const fetchProductions = () => (
-    fetch('/api/productions')
+    fetch('/productions')
     .then(res => res.json())
     .then(setProductions)
   )
 
   const fetchUser = () => (
-    fetch('/api/authorized')
+    fetch('/authorized')
     .then(res => {
       if(res.ok){
         res.json()

@@ -9,7 +9,7 @@ function Navigation({updateUser}) {
  const history = useHistory()
 
  const handleLogout = () => {
-    fetch("/api/logout", {
+    fetch("/logout", {
       method: "DELETE",
     }).then(res => {
       if(res.ok){
