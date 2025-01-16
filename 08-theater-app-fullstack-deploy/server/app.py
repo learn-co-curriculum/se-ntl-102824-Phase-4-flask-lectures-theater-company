@@ -29,7 +29,7 @@ from werkzeug.exceptions import NotFound, Unauthorized
 # the following adds route-specific authorization
 @app.before_request
 def check_if_logged_in():
-    open_access_list = ["signup", "login", "logout", "authorized", "productions"]
+    open_access_list = ["signup", "login", "logout", "authorized", "productions", "index", "static"]
 
     # if the user is in session OR the request endpoint is open-access, the request will be processed as usual
     if request.endpoint not in open_access_list and not session.get("user_id"):
@@ -212,19 +212,13 @@ api.add_resource(Logout, "/logout")
 
 @app.errorhandler(NotFound)
 def handle_not_found(e):
-    response = make_response(
-        {"message": "Not Found: Sorry the resource you are looking for does not exist"},
-        404,
-    )
-
-    return response
+    return render_template("index.html")
 
 
 @app.errorhandler(Unauthorized)
 def handle_unauthorized(e):
-    return make_response(
-        {"message": "Unauthorized: you must be logged in to make that request."}, 401
-    )
+    return render_template("index.html")
+    
 
 
 if __name__ == "__main__":
