@@ -22,7 +22,7 @@ function ProductionForm({addProduction}) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch("/productions", {
+      fetch("/api/productions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

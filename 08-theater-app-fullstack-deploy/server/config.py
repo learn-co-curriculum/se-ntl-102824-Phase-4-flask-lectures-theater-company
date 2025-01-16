@@ -25,7 +25,11 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(metadata=metadata, engine_options={"echo": True})
 
-app = Flask(__name__)
+app = Flask(__name__,
+        static_url_path='',
+        static_folder='../client/dist',
+        template_folder='../client/dist')
+        
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False

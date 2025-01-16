@@ -35,6 +35,10 @@ def check_if_logged_in():
     if request.endpoint not in open_access_list and not session.get("user_id"):
         raise Unauthorized
 
+@app.route('/')
+@app.route('/<int:id>')
+def index(id=0):
+    return render_template("index.html")
 
 class Productions(Resource):
     def get(self):

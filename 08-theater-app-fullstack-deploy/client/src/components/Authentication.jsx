@@ -26,7 +26,7 @@ function Authentication({updateUser}) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-        fetch(signUp?'/signup':'/login',{
+        fetch(signUp?'/api/signup':'/api/login',{
           method: "POST",
           headers: {
             "Content-Type": "application/json",

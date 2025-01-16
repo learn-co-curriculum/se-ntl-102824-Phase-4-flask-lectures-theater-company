@@ -9,7 +9,7 @@ function ProductionDetail() {
   const params = useParams()
   const history = useHistory()
   useEffect(()=>{
-    fetch(`/productions/${params.id}`)
+    fetch(`/api/productions/${params.id}`)
     .then(res => { 
       if(res.ok){
         res.json().then(data => setProduction(data))
