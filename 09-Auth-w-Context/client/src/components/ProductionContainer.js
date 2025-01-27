@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 import ProductionCard from './ProductionCard'
+import { useProduction } from '../context/production'
 
 
-function ProductionContainer({productions}) {
+function ProductionContainer() {
+
+    const { productions } = useProduction()
 
     return (
-     <div>
-         <Title><span>F</span>latIron Theater <span>C</span>ompany</Title>
-         <CardContainer>
-             {productions.map(production => <ProductionCard  key={production.id} production={production}  />)}
-         </CardContainer>
-     </div>
+        <div>
+            <Title><span>F</span>latIron Theater <span>C</span>ompany</Title>
+            <CardContainer>
+                {productions.map(production => <ProductionCard  key={production.id} production={production}  />)}
+            </CardContainer>
+        </div>
     )
   }
   

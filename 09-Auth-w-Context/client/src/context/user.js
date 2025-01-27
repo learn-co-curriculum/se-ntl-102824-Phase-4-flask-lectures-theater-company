@@ -12,8 +12,22 @@ function UserProvider({ children }){
 
     const [user, setUser] = useState(null)
 
+    const fetchUser = () => (
+        fetch('/authorized')
+        .then(res => {
+          if(res.ok){
+            res.json()
+            .then(data => {
+              setUser(data)
+            })
+          } else {
+            setUser(null)
+          }
+        })
+      )
+
     return (
-        <UserContext.Provider value={{user, setUser}}>
+        <UserContext.Provider value={{user, setUser, fetchUser}}>
             {children}
         </UserContext.Provider>
     )

@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { UserContext } from '../context/user'
 
 function Navigation({updateUser}) {
  const [menu, setMenu] = useState(false)
  const history = useHistory()
+
+ const { user } = useContext(UserContext)
 
  const handleLogout = () => {
     fetch("/logout", {
@@ -22,6 +25,7 @@ function Navigation({updateUser}) {
     return (
         <Nav> 
          <NavH1>Flatiron Theater Company</NavH1>
+         {user && <n2>Hello, {user.name}!</n2>}
          <Menu>
            {!menu?
            <div onClick={() => setMenu(!menu)}>
